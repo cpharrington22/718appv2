@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import './App.css';
+import logo from './logo.svg';
+import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
 
 function App() {
     const [currentVal,setCurrentVal]=useState('');
@@ -113,7 +115,6 @@ function App() {
                 <button class="grid-item" name="6" onClick={Num}>6</button>
                 <button class="grid-item" name="*" onClick={Num}>*</button>
                 <button class="grid-item" name="\" onClick={Num}>\</button>
-
                 <button class="grid-item" name="1" onClick={Num}>1</button>
                 <button class="grid-item" name="2" onClick={Num}>2</button>
                 <button class="grid-item" name="3" onClick={Num}>3</button>
@@ -124,9 +125,13 @@ function App() {
                 <button class="grid-item" name="Clear" onClick={Clear}>Clear</button>
                 <button class="grid-item" name="=" onClick={Equal}>=</button>
             </form>
+
+            <div className="App">
+                <AmplifySignOut />
+            </div>
+
         </div>
     );
 }
 
-
-export default App;
+export default withAuthenticator(App);
