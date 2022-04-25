@@ -2,7 +2,7 @@
   text-align: center;
   background-color: grey;
 }
-/*
+
 #result {
   position: absolute;
   left:  0px;
@@ -11,6 +11,14 @@
   padding: 20px;
   background-color:white;
   z-index: 0;
+}
+#List {
+  float: right;
+  top: 25px;
+  width: 40%;
+  padding: 20px;
+  background-color:white;
+
 }
 
 .grid-container {

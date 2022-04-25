@@ -1,93 +1,165 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
-import { API, Storage } from 'aws-amplify';
-import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
-import { listNotes } from './graphql/queries';
-import { createNote as createNoteMutation, deleteNote as deleteNoteMutation } from './graphql/mutations';
+import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
+import { listEquations } from './graphql/queries';
+import { createEquation as createEquationMutation } from './graphql/mutations';
+import { API } from 'aws-amplify';
 
-const initialFormState = { name: '', description: '' }
+const initialFormState = { name: '' }
 
 function App() {
-  const [notes, setNotes] = useState([]);
-  const [formData, setFormData] = useState(initialFormState);
+    const [currentVal,setCurrentVal]=useState('');
+    const [equations, setEquations] = useState([]);
+    const [formData, setFormData] = useState(initialFormState);
 
-  useEffect(() => {
-    fetchNotes();
-  }, []);
+    useEffect(() => {
+        fetchEquations();
+    }, []);
 
-  async function onChange(e) {
-    if (!e.target.files[0]) return
-    const file = e.target.files[0];
-    setFormData({ ...formData, image: file.name });
-    await Storage.put(file.name, file);
-    fetchNotes();
-  }
-
-  async function fetchNotes() {
-    const apiData = await API.graphql({ query: listNotes });
-    const notesFromAPI = apiData.data.listNotes.items;
-    await Promise.all(notesFromAPI.map(async note => {
-        if (note.image) {
-            const image = await Storage.get(note.image);
-            note.image = image;
-        }
-        return note;
-    }))
-    setNotes(apiData.data.listNotes.items);
-  }
-
-  async function createNote() {
-    if (!formData.name || !formData.description) return;
-    await API.graphql({ query: createNoteMutation, variables: { input: formData } });
-    if (formData.image) {
-        const image = await Storage.get(formData.image);
-        formData.image = image;
+    async function fetchEquations() {
+        const apiData = await API.graphql({ query: listEquations });
+        setEquations(apiData.data.listEquations.items);
     }
-    setNotes([ ...notes, formData ]);
-    setFormData(initialFormState);
-  }
 
-  async function deleteNote({ id }) {
-    const newNotesArray = notes.filter(note => note.id !== id);
-    setNotes(newNotesArray);
-    await API.graphql({ query: deleteNoteMutation, variables: { input: { id } }});
-  }
+    const Num=(e)=>{
+        e.preventDefault();
+        let val= currentVal + e.target.name;
+        setCurrentVal(val);
+    }
+    
+    const Clear=(e)=>{
+        e.preventDefault();
+        setCurrentVal('');
+    }
 
-  return (
-    <div className="App">
-      <h1>My Notes App</h1>
-      <input
-        onChange={e => setFormData({ ...formData, 'name': e.target.value})}
-        placeholder="Note name"
-        value={formData.name}
-      />
-      <input
-        onChange={e => setFormData({ ...formData, 'description': e.target.value})}
-        placeholder="Note description"
-        value={formData.description}
-      />
-      <input
-        type="file"
-        onChange={onChange}
-      />
-      <button onClick={createNote}>Create Note</button>
-      <div style={{marginBottom: 30}}>
-        {
-            notes.map(note => (
-                <div key={note.id || note.name}>
-                    <h2>{note.name}</h2>
-                    <p>{note.description}</p>
-                    <button onClick={() => deleteNote(note)}>Delete note</button>
-                {
-                    note.image && <img src={note.image} style={{width: 400}} alt=""/>
+    const Equal = async (e)=>{
+        e.preventDefault();
+        var flag = 0
+        for (var i = 0; i < currentVal.length; i++) {
+            if(currentVal.charAt(i) === "+") {
+                let vals = currentVal.split("+");
+                if(vals[0] > 127 || vals[0] < -127){
+                    setCurrentVal("Error Invalid Byte");
+                    flag = 1;
                 }
-                </div>
-            ))
+                if(vals[1] > 127 || vals[1] < -127){
+                    setCurrentVal("Error Invalid Byte");
+                    flag = 1;
+                }        
+            } else if(currentVal.charAt(i) === "-") {
+                let vals = currentVal.split("-");
+                if(vals[0] > 127 || vals[0] < -127){
+                    setCurrentVal("Error Invalid Byte");
+                    flag = 1;
+                }
+                if(vals[1] > 127 || vals[1] < -127){
+                    setCurrentVal("Error Invalid Byte");
+                    flag = 1;
+                } 
+            } else if(currentVal.charAt(i) === "*") {
+                let vals = currentVal.split("*");
+                if(vals[0] > 127 || vals[0] < -127){
+                    setCurrentVal("Error Invalid Byte");
+                    flag = 1;
+                }
+                if(vals[1] > 127 || vals[1] < -127){
+                    setCurrentVal("Error Invalid Byte");
+                    flag = 1;
+                } 
+            } else if(currentVal.charAt(i) === "\\") {
+                let vals = currentVal.split("\\");
+                if(vals[0] > 127 || vals[0] < -127){
+                    setCurrentVal("Error Invalid Byte");
+                    flag = 1;
+                }
+                if(vals[1] > 127 || vals[1] < -127){
+                    setCurrentVal("Error Invalid Byte");
+                    flag = 1;
+                } 
+                let val = vals[0]/vals[1];
+                setCurrentVal(val);
+                flag = 1;
+            } else if(currentVal.charAt(i) === "%") {
+                let vals = currentVal.split("%");
+                if(vals[0] > 127 || vals[0] < -127){
+                    setCurrentVal("Error Invalid Byte");
+                    flag = 1;
+                }
+                if(vals[1] > 127 || vals[1] < -127){
+                    setCurrentVal("Error Invalid Byte");
+                    flag = 1;
+                } 
+            } else if(currentVal.charAt(i) === "^") {
+                let vals = currentVal.split("^");
+                if(vals[0] > 127 || vals[0] < -127){
+                    setCurrentVal("Error Invalid Byte");
+                    flag = 1;
+                }
+                if(vals[1] > 127 || vals[1] < -127){
+                    setCurrentVal("Error Invalid Byte");
+                    flag = 1;
+                } 
+                let val = Math.pow(vals[0], vals[1]);
+                setCurrentVal(val);
+                flag = 1;
+            }
         }
-      </div>
-      <AmplifySignOut />
-    </div>
-  );
+        if(flag === 0) {
+
+            let val = parseInt(eval(currentVal));
+            setFormData({ ...formData, 'name': val, "description" :currentVal})
+            setCurrentVal(val);
+            await API.graphql({ query: createEquationMutation, variables: { input: formData } });
+            setEquations([ ...equations, formData]);
+        }
+    }
+
+    return (
+        <div className="App">
+            <div className="app-title">
+                <h1> Calculator</h1>
+            </div>
+            <input type="text" id="result" value={currentVal} readOnly/>
+            <br/>
+            <form class="grid-container"> 
+                <button class="grid-item" name="7" onClick={Num}>7</button>
+                <button class="grid-item" name="8" onClick={Num}>8</button>
+                <button class="grid-item" name="9" onClick={Num}>9</button>
+                <button class="grid-item" name="+" onClick={Num}>+</button>
+                <button class="grid-item" name="-" onClick={Num}>-</button>
+
+                <button class="grid-item" name="4" onClick={Num}>4</button>
+                <button class="grid-item" name="5" onClick={Num}>5</button>
+                <button class="grid-item" name="6" onClick={Num}>6</button>
+                <button class="grid-item" name="*" onClick={Num}>*</button>
+                <button class="grid-item" name="\" onClick={Num}>\</button>
+                <button class="grid-item" name="1" onClick={Num}>1</button>
+                <button class="grid-item" name="2" onClick={Num}>2</button>
+                <button class="grid-item" name="3" onClick={Num}>3</button>
+                <button class="grid-item" name="^" onClick={Num}>^</button>
+                <button class="grid-item" name="%" onClick={Num}>%</button>
+
+                <button class="grid-item" name="0" onClick={Num}>0</button>
+                <button class="grid-item" name="Clear" onClick={Clear}>Clear</button>
+                <button class="grid-item" name="=" onClick={Equal}>=</button>
+            </form>
+
+            <div id="List">
+                {
+                    equations.map(equation => (
+                    <ul key={equation.id || equation.name}>
+                      <li>{equation.description} = {equation.name}</li>
+                    </ul>
+                    ))
+                }
+            </div>
+
+            <div className="App">
+                <AmplifySignOut />
+            </div>
+
+        </div>
+    );
 }
 
 export default withAuthenticator(App);

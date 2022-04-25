@@ -11,7 +11,7 @@ const initialFormState = { name: '', description: '' }
 function App() {
     const [currentVal,setCurrentVal]=useState('');
     let answer;
-    const [equations, setEquation] = useState([]);
+    const [equations, setEquations] = useState([]);
 
     useEffect(() => {
         fetchEquations();

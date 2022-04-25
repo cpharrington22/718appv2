@@ -1,7 +1,7 @@
 export const schema = {
     "models": {
-        "Note": {
-            "name": "Note",
+        "Equation": {
+            "name": "Equation",
             "fields": {
                 "id": {
                     "name": "id",
@@ -42,16 +42,32 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Notes",
+            "pluralName": "Equations",
             "attributes": [
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         }
     },
     "enums": {},
     "nonModels": {},
-    "version": "7242b838f006180cf42e6ea7ad23fd2a"
+    "version": "7a377795c60ac1994e15aab5d810a1cd"
 };
