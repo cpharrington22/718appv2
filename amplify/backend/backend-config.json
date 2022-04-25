@@ -92,5 +92,12 @@
         }
       }
     }
+  },
+  "storage": {
+    "numstore": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    }
   }
 }

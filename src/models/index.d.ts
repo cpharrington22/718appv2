@@ -4,15 +4,16 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 
 
-type EquationMetaData = {
+type NoteMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-export declare class Equation {
+export declare class Note {
   readonly id: string;
   readonly name: string;
+  readonly description?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  constructor(init: ModelInit<Equation, EquationMetaData>);
-  static copyOf(source: Equation, mutator: (draft: MutableModel<Equation, EquationMetaData>) => MutableModel<Equation, EquationMetaData> | void): Equation;
+  constructor(init: ModelInit<Note, NoteMetaData>);
+  static copyOf(source: Note, mutator: (draft: MutableModel<Note, NoteMetaData>) => MutableModel<Note, NoteMetaData> | void): Note;
 }

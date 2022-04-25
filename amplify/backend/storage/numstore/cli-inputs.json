@@ -1,0 +1,14 @@
+{
+  "resourceName": "numstore",
+  "policyUUID": "cbe9930a",
+  "bucketName": "718appv2f7733e0aa8534f05b0105c3ab51b61ee",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}
