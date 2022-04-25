@@ -3,6 +3,10 @@
   background-color: grey;
 }
 
+.ul {
+  height:  200px;
+}
+
 #result {
   position: absolute;
   left:  0px;
@@ -13,7 +17,9 @@
   z-index: 0;
 }
 #List {
-  float: right;
+  position: absolute;
+  right:  10px;
+  height: 75%;
   top: 25px;
   width: 40%;
   padding: 20px;

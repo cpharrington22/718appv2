@@ -5,7 +5,7 @@ import { listEquations } from './graphql/queries';
 import { createEquation as createEquationMutation } from './graphql/mutations';
 import { API } from 'aws-amplify';
 
-const initialFormState = { name: '' }
+const initialFormState = { name: '0', description: '0'}
 
 function App() {
     const [currentVal,setCurrentVal]=useState('');
@@ -147,9 +147,9 @@ function App() {
             <div id="List">
                 {
                     equations.map(equation => (
-                    <ul key={equation.id || equation.name}>
-                      <li>{equation.description} = {equation.name}</li>
-                    </ul>
+                    <tbody id="ul" key={equation.id || equation.name || equation.description}>
+                      <tr>{equation.description} = {equation.name}</tr>
+                    </tbody>
                     ))
                 }
             </div>
