@@ -19,16 +19,16 @@
       "function": {
         "718appv20f20e957DefineAuthChallenge": {
           "deploymentBucketName": "amplify-amplify0ca1aa6806434-staging-182214-deployment",
-          "s3Key": "amplify-builds/718appv20f20e957DefineAuthChallenge-656e764f794b65724561-build.zip"
+          "s3Key": "amplify-builds/718appv20f20e957DefineAuthChallenge-556d33654c5955436e67-build.zip"
         },
         "718appv20f20e957CreateAuthChallenge": {
           "deploymentBucketName": "amplify-amplify0ca1aa6806434-staging-182214-deployment",
-          "s3Key": "amplify-builds/718appv20f20e957CreateAuthChallenge-31506178333249667753-build.zip"
+          "s3Key": "amplify-builds/718appv20f20e957CreateAuthChallenge-7565435844316d52336b-build.zip"
         },
         "718appv20f20e957VerifyAuthChallengeResponse": {
           "RECAPTCHASECRET": "",
           "deploymentBucketName": "amplify-amplify0ca1aa6806434-staging-182214-deployment",
-          "s3Key": "amplify-builds/718appv20f20e957VerifyAuthChallengeResponse-7a74653438616c506b66-build.zip"
+          "s3Key": "amplify-builds/718appv20f20e957VerifyAuthChallengeResponse-6a576179577a41745435-build.zip"
         }
       }
     }
