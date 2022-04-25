@@ -1,11 +1,31 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 import logo from './logo.svg';
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
+import { listEquations } from './graphql/queries';
+import { createEquation as createEquationMutation } from './graphql/mutations';
+import { API } from 'aws-amplify';
+
+const initialFormState = { name: '', description: '' }
 
 function App() {
     const [currentVal,setCurrentVal]=useState('');
     let answer;
+    const [equations, setEquation] = useState([]);
+
+    useEffect(() => {
+        fetchEquations();
+    }, []);
+
+    async function fetchEquations() {
+        const apiData = await API.graphql({ query: listEquations });
+        //setEquations(apiData.data.listEquations.items);
+    }
+
+    async function createEquation(value) {
+        await API.graphql({ query: createEquationMutation, variables: { value } });
+        //setEquations([ ...equations, value]);
+    }
 
     const Num=(e)=>{
         e.preventDefault();
@@ -22,7 +42,7 @@ function App() {
         e.preventDefault();
         var flag = 0
         for (var i = 0; i < currentVal.length; i++) {
-            if(currentVal.charAt(i) == "+") {
+            if(currentVal.charAt(i) === "+") {
                 let vals = currentVal.split("+");
                 if(vals[0] > 127 || vals[0] < -127){
                     setCurrentVal("Error Invalid Byte");
@@ -32,7 +52,7 @@ function App() {
                     setCurrentVal("Error Invalid Byte");
                     flag = 1;
                 }        
-            } else if(currentVal.charAt(i) == "-") {
+            } else if(currentVal.charAt(i) === "-") {
                 let vals = currentVal.split("-");
                 if(vals[0] > 127 || vals[0] < -127){
                     setCurrentVal("Error Invalid Byte");
@@ -42,7 +62,7 @@ function App() {
                     setCurrentVal("Error Invalid Byte");
                     flag = 1;
                 } 
-            } else if(currentVal.charAt(i) == "*") {
+            } else if(currentVal.charAt(i) === "*") {
                 let vals = currentVal.split("*");
                 if(vals[0] > 127 || vals[0] < -127){
                     setCurrentVal("Error Invalid Byte");
@@ -52,7 +72,7 @@ function App() {
                     setCurrentVal("Error Invalid Byte");
                     flag = 1;
                 } 
-            } else if(currentVal.charAt(i) == "\\") {
+            } else if(currentVal.charAt(i) === "\\") {
                 let vals = currentVal.split("\\");
                 if(vals[0] > 127 || vals[0] < -127){
                     setCurrentVal("Error Invalid Byte");
@@ -65,7 +85,7 @@ function App() {
                 let val = vals[0]/vals[1];
                 setCurrentVal(val);
                 flag = 1;
-            } else if(currentVal.charAt(i) == "%") {
+            } else if(currentVal.charAt(i) === "%") {
                 let vals = currentVal.split("%");
                 if(vals[0] > 127 || vals[0] < -127){
                     setCurrentVal("Error Invalid Byte");
@@ -75,7 +95,7 @@ function App() {
                     setCurrentVal("Error Invalid Byte");
                     flag = 1;
                 } 
-            } else if(currentVal.charAt(i) == "^") {
+            } else if(currentVal.charAt(i) === "^") {
                 let vals = currentVal.split("^");
                 if(vals[0] > 127 || vals[0] < -127){
                     setCurrentVal("Error Invalid Byte");
@@ -90,7 +110,7 @@ function App() {
                 flag = 1;
             }
         }
-        if(flag == 0) {
+        if(flag === 0) {
             let val = parseInt(eval(currentVal));
             setCurrentVal(val);
         }
@@ -123,8 +143,18 @@ function App() {
 
                 <button class="grid-item" name="0" onClick={Num}>0</button>
                 <button class="grid-item" name="Clear" onClick={Clear}>Clear</button>
-                <button class="grid-item" name="=" onClick={Equal}>=</button>
+                <button class="grid-item" name="=" onClick={function(event){ Equal(); createEquation(currentVal)}}>=</button>
             </form>
+
+            <div style={{marginBottom: 30}}>
+                {
+                    equations.map(equation => (
+                    <div key={equation.id}>
+                        <p>{equation.description}</p>
+                    </div>
+                    ))
+                }
+            </div>
 
             <div className="App">
                 <AmplifySignOut />
