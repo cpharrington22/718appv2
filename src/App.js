@@ -100,7 +100,10 @@ function App() {
                     flag = 1;
                 } 
                 let val = Math.pow(vals[0], vals[1]);
+                setFormData({ ...formData, 'name': val, "description" :currentVal})
                 setCurrentVal(val);
+                await API.graphql({ query: createEquationMutation, variables: { input: formData } });
+                setEquations([ ...equations, formData]);
                 flag = 1;
             }
         }
@@ -146,9 +149,9 @@ function App() {
 
             <div id="List">
                 {
-                    equations.map(equation => (
-                    <tbody id="ul" key={equation.id || equation.name || equation.description}>
-                      <tr>{equation.description} = {equation.name}</tr>
+                    equations.slice(0).reverse().slice(0,18).map(equation => (
+                    <tbody id="ul" key={equation.id || equation.name}>
+                      <tr><td>{equation.description} = {equation.name}</td></tr>
                     </tbody>
                     ))
                 }

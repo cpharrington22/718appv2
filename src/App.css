@@ -3,10 +3,6 @@
   background-color: grey;
 }
 
-.ul {
-  height:  200px;
-}
-
 #result {
   position: absolute;
   left:  0px;
@@ -19,8 +15,8 @@
 #List {
   position: absolute;
   right:  10px;
-  height: 75%;
-  top: 25px;
+  height: 60%;
+  top: 100px;
   width: 40%;
   padding: 20px;
   background-color:white;
@@ -49,6 +45,10 @@
   width: 50%;
   background-color: #2196F3;
   padding: 10px;
+}
+
+table, td {
+  border: 1px solid;
 }
 /* 
 .App-logo {
